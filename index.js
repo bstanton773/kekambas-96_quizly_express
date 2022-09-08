@@ -5,12 +5,15 @@ const { connectDB } = require('./src/db');
 const { graphqlHTTP } = require('express-graphql');
 const schema = require('./src/graphql/schema');
 const cookieParser = require('cookie-parser')
+const { authenticate } = require('./src/middleware/auth')
 
 dotenv.config();
 const app = express();
 connectDB();
 
 app.use(cookieParser())
+
+app.use(authenticate)
 
 app.use('/graphql', graphqlHTTP({
     schema,
