@@ -15,7 +15,19 @@ const users = {
 }
 
 
+const user = {
+    type: UserType,
+    description: "Query user by id",
+    args: {
+        id: { type: GraphQLID }
+    },
+    resolve(parent, args){
+        return User.findById(args.id)
+    }
+}
+
 
 module.exports = {
-    users
+    users,
+    user
 }
