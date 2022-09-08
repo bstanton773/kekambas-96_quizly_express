@@ -4,10 +4,13 @@ const path = require('path');
 const { connectDB } = require('./src/db');
 const { graphqlHTTP } = require('express-graphql');
 const schema = require('./src/graphql/schema');
+const cookieParser = require('cookie-parser')
 
 dotenv.config();
 const app = express();
 connectDB();
+
+app.use(cookieParser())
 
 app.use('/graphql', graphqlHTTP({
     schema,
