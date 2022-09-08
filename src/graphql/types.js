@@ -1,7 +1,7 @@
 // Import built-in graphql type
 const { GraphQLObjectType, GraphQLID, GraphQLString } = require('graphql');
 
-
+//  Create a GraphQL type for the User 
 const UserType = new GraphQLObjectType(
     {
         name: 'User',

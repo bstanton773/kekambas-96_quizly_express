@@ -7,17 +7,23 @@ const schema = require('./src/graphql/schema');
 const cookieParser = require('cookie-parser')
 const { authenticate } = require('./src/middleware/auth')
 
+// loads the .env file into the process.env
 dotenv.config();
+// Creates the express application
 const app = express();
+// Connects to the database
 connectDB();
 
+// Add cookie-parser middleware to add cookie headers to the req.cookie
 app.use(cookieParser())
 
+// Add authentication middleware to the app
 app.use(authenticate)
 
+// Add graphql to the express application
 app.use('/graphql', graphqlHTTP({
     schema,
-    graphiql: true
+    graphiql: true // Allows us to use the GraphiQL test tool
 }));
 
 // Set the view engine to ejs
