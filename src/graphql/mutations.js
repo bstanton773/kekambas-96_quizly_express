@@ -29,4 +29,24 @@ const register = {
     }
 }
 
-module.exports = { register };
+
+const login = {
+    type: GraphQLString,
+    description: "Log a user in with email and password",
+    args: {
+        email: { type: GraphQLString },
+        password: { type: GraphQLString }
+    },
+    async resolve(parent, args){
+        const user = await User.findOne({ email: args.email });
+        if (!user || user.password !== args.password){
+            throw new Error('Invalid Credentials');
+        };
+
+        const token = createJwtToken(user);
+        return token
+    }
+}
+
+
+module.exports = { register, login };
