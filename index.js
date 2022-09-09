@@ -4,8 +4,9 @@ const path = require('path');
 const { connectDB } = require('./src/db');
 const { graphqlHTTP } = require('express-graphql');
 const schema = require('./src/graphql/schema');
-const cookieParser = require('cookie-parser')
-const { authenticate } = require('./src/middleware/auth')
+const cookieParser = require('cookie-parser');
+const { authenticate } = require('./src/middleware/auth');
+const { userData } = require('./src/middleware/userData');
 
 // loads the .env file into the process.env
 dotenv.config();
@@ -15,10 +16,13 @@ const app = express();
 connectDB();
 
 // Add cookie-parser middleware to add cookie headers to the req.cookie
-app.use(cookieParser())
+app.use(cookieParser());
 
 // Add authentication middleware to the app
-app.use(authenticate)
+app.use(authenticate);
+
+// Add userData middleware AFTER authentication middleware
+app.use(userData);
 
 // Add graphql to the express application
 app.use('/graphql', graphqlHTTP({
