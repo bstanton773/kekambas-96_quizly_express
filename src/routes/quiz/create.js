@@ -33,7 +33,6 @@ module.exports = async (req, res) => {
     `
     let quizSlug = '';
     try{
-        console.log(quizData)
         const { data } = await axios.post(process.env.GRAPHQL_ENDPOINT,
             {
                 query: mutation,

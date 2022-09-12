@@ -9,7 +9,7 @@
                     <p class="mb-0"><%= quiz.description %></p>
                 </div>
             </div>
-            <form action="/quiz/<%= quiz.slug %>/submit" method="POST">
+            <form action="/quiz/<%= quiz.slug %>" method="POST">
                 <input type="hidden" name="title" value="<%= quiz.title %>">
                 <input type="hidden" name="quizId" value="<%= quiz.id %>">
                 <% for (const question of quiz.questions) { %>
