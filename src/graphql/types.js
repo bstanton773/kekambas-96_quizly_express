@@ -1,6 +1,6 @@
 // Import built-in graphql type
-const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLInt, GraphQLList, GraphQLInputObjectType } = require('graphql');
-const { User, Quiz, Question } = require('../models')
+const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLInt, GraphQLList, GraphQLInputObjectType, GraphQLFloat } = require('graphql');
+const { User, Quiz, Question, Submission } = require('../models')
 
 //  Create a GraphQL type for the User 
 const UserType = new GraphQLObjectType(
@@ -15,6 +15,12 @@ const UserType = new GraphQLObjectType(
                 type: GraphQLList(QuizType),
                 resolve(parent, args){
                     return Quiz.find({ userId: parent.id })
+                }
+            },
+            submissions: {
+                type: GraphQLList(SubmissionType),
+                resolve(parent, args){
+                    return Submission.find({ userId: parent.id })
                 }
             }
         })
@@ -43,6 +49,24 @@ const QuizType = new GraphQLObjectType(
                 type: GraphQLList(QuestionType),
                 resolve(parent, args){
                     return Question.find({ quizId: parent.id })
+                }
+            },
+            submissions: {
+                type: GraphQLList(SubmissionType),
+                resolve(parent, args){
+                    return Submission.find({ quizId: parent.id})
+                }
+            },
+            avgScore: {
+                type: GraphQLFloat,
+                async resolve(parent, args){
+                    const submissions = await Submission.find({ quizId: parent.id });
+                    let score = 0;
+
+                    for (const submission of submissions){
+                        score += submission.score
+                    };
+                    return score / submissions.length;
                 }
             }
         })
