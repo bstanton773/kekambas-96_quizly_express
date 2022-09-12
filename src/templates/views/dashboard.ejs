@@ -23,10 +23,12 @@
                         <small><%= quiz.description %> </small>
                     </td>
                     <td>
-                        2
+                        <%= quiz.submissions.length %>
                     </td>
                     <td>
-                        100%
+                        <% if (quiz.avgScore) { %>
+                            <%= quiz.avgScore.toFixed(2) %>%
+                        <% } %>
                     </td>
                 </tr>
             <% } %>

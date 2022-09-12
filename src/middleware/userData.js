@@ -9,17 +9,32 @@ const userData = async (req, res, next) => {
     const query = `
         query user($id: ID!){
             user(id: $id){
-            id,
-            quizzes{
                 id,
-                slug,
-                title,
-                description,
-                questions{
+                quizzes{
+                    id,
+                    slug,
                     title,
-                    order,
-                    correctAnswer
-                    }
+                    description,
+                    questions {
+                        title,
+                        order,
+                        correctAnswer
+                    },
+                    submissions {
+                        score,
+                        userId
+                    },
+                    avgScore
+                },
+                submissions {
+                    id,
+                    userId,
+                    quizId,
+                    quiz {
+                        title,
+                        description
+                    },
+                    score
                 }
             }
         }
@@ -44,6 +59,7 @@ const userData = async (req, res, next) => {
     }
 
     req.verifiedUser.user.quizzes = data?.data?.data?.user?.quizzes ?? [];
+    req.verifiedUser.user.submissions = data?.data?.data?.user?.submissions ?? [];
 
     next()
 }
